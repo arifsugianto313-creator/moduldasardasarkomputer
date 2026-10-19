@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modul E-Book Interaktif: Dasar-Dasar Komputer & Sejarah Lengkap</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Font Awesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    
+    /* Font Size Adjustments */
+    .fs-sm .module-body { font-size: 0.875rem; leading: 1.6; }
+    .fs-md .module-body { font-size: 1rem; leading: 1.75; }
+    .fs-lg .module-body { font-size: 1.125rem; leading: 1.85; }
+
+    /* Print Styles */
+    @media print {
+      header, sidebar, #tools-bar, #reading-progress, .no-print { display: none !important; }
+      main { margin: 0 !important; width: 100% !important; padding: 0 !important; }
+      .module-card { border: none !important; shadow: none !important; page-break-after: always; }
+      body { background: white !important; color: black !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200 fs-md">
+
+  <!-- TOP READING PROGRESS BAR -->
+  <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-indigo-600 dark:bg-indigo-400 z-50 transition-all duration-150 w-0"></div>
+
+  <!-- HEADER NAVBAR -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur flex-none border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Mobile Toggle -->
+      <div class="flex items-center space-x-3">
+        <button id="sidebarToggle" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-teal-500 rounded-xl text-white flex items-center justify-center font-bold shadow-md">
+          <i class="fa-solid fa-book-bookmark text-base"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-extrabold bg-gradient-to-r from-indigo-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent">CompEdu Modul 100</h1>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Modul Pembelajaran Komputer Super Lengkap</p>
+        </div>
+      </div>
+
+      <!-- Realtime Global Search Bar -->
+      <div class="flex-1 max-w-md mx-2">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="globalSearch" onkeyup="searchModuleContent()" placeholder="Cari dalam 10 Bab (Cth: Von Neumann, ENIAC, RAM, Biner, OSI)..." 
+            class="w-full pl-9 pr-8 py-1.5 text-xs rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-slate-200">
+          <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Actions Controls -->
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <!-- Font Size Adjuster -->
+        <div class="hidden sm:flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1 text-xs border border-slate-200 dark:border-slate-700">
+          <button onclick="setFontSize('sm')" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold" title="Font Kecil">A-</button>
+          <button onclick="setFontSize('md')" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold" title="Font Normal">A</button>
+          <button onclick="setFontSize('lg')" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold" title="Font Besar">A+</button>
+        </div>
+
+        <!-- Print PDF -->
+        <button onclick="window.print()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Cetak / Save PDF">
+          <i class="fa-solid fa-print text-xs"></i>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Tema">
+          <i class="fa-solid fa-moon dark:hidden text-xs"></i>
+          <i class="fa-solid fa-sun hidden dark:block text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex pt-6 gap-8">
+
+    <!-- SIDEBAR NAVIGATION (With Progress Tracker & Table of Contents) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:block shrink-0 rounded-2xl shadow-lg lg:shadow-none p-4 h-[calc(100vh-5rem)] overflow-y-auto no-print">
+      
+      <div class="flex justify-between items-center lg:hidden mb-4 pb-2 border-b border-slate-200 dark:border-slate-700">
+        <span class="font-bold text-xs uppercase tracking-wider text-slate-500">Daftar Bab Modul</span>
+        <button id="closeSidebar" class="p-1 text-slate-500 hover:text-slate-800 dark:hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Module Progress Stats -->
+      <div class="mb-6 p-3.5 bg-gradient-to-br from-indigo-500 to-teal-600 rounded-xl text-white shadow-md">
+        <div class="flex justify-between items-center text-xs font-semibold mb-1">
+          <span>Progres Membaca</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden mb-2">
+          <div id="progressBar" class="bg-amber-300 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <p class="text-[10px] text-indigo-100"><i class="fa-solid fa-circle-info mr-1"></i>Tersimpan otomatis di browser</p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1 text-xs font-medium">
+        <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-2">Bab Pembelajaran</div>
+        
+        <a href="#bab1" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">01</span>
+          <span class="truncate">BAB 1: Fundamental Sistem</span>
+        </a>
+        
+        <a href="#bab2" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">02</span>
+          <span class="truncate">BAB 2: Sejarah & Evolusi</span>
+        </a>
+
+        <a href="#bab3" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">03</span>
+          <span class="truncate">BAB 3: Hardware - Input Device</span>
+        </a>
+
+        <a href="#bab4" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">04</span>
+          <span class="truncate">BAB 4: CPU & Memori Utama</span>
+        </a>
+
+        <a href="#bab5" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">05</span>
+          <span class="truncate">BAB 5: Output & Storage</span>
+        </a>
+
+        <a href="#bab6" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">06</span>
+          <span class="truncate">BAB 6: Perangkat Lunak (Software)</span>
+        </a>
+
+        <a href="#bab7" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">07</span>
+          <span class="truncate">BAB 7: Sistem Bilangan & Data</span>
+        </a>
+
+        <a href="#bab8" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">08</span>
+          <span class="truncate">BAB 8: Jaringan & Internet</span>
+        </a>
+
+        <a href="#bab9" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mr-2 text-[10px]">09</span>
+          <span class="truncate">BAB 9: Keamanan & Etika Digital</span>
+        </a>
+
+        <a href="#bab10" class="nav-link flex items-center px-3 py-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center mr-2 text-[10px]">10</span>
+          <span class="truncate">BAB 10: Rangkuman & Kuis</span>
+        </a>
+
+        <!-- Extra Nav Section -->
+        <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700 space-y-1">
+          <a href="#catatan-pribadi" class="flex items-center px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-amber-50 dark:hover:bg-slate-700/50 hover:text-amber-600">
+            <i class="fa-solid fa-note-sticky text-amber-500 w-6"></i> Catatan Saya
+          </a>
+          <a href="#glosarium" class="flex items-center px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-teal-50 dark:hover:bg-slate-700/50 hover:text-teal-600">
+            <i class="fa-solid fa-spell-check text-teal-500 w-6"></i> Glosarium Istilah
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA (10 BABS SUPER LENGKAP) -->
+    <main class="flex-1 min-w-0 pb-20 space-y-12">
+
+      <!-- HERO BANNER / COVER MODUL -->
+      <div class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white overflow-hidden shadow-2xl border border-indigo-500/20">
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-flex items-center px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 rounded-full text-xs font-semibold mb-4 backdrop-blur">
+            <i class="fa-solid fa-certificate mr-1.5 text-amber-400"></i> Modul Akademis E-Book Lengkap
+          </span>
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-4">
+            Dasar-Dasar Komputer & Sejarah Perkembangannya
+          </h1>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 font-light">
+            Panduan komprehensif tingkat universitas/profesional yang mengupas tuntas arsitektur hardware, instruksi software, teori pemrosesan data, jaringan, keamanan digital, serta perjalanan evolusi teknologi dari kalkulator mekanis hingga komputasi kuantum.
+          </p>
+          <div class="flex flex-wrap gap-4 text-xs font-semibold">
+            <a href="#bab1" class="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg transition flex items-center">
+              <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca Bab 1
+            </a>
+            <a href="#kuis-section" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center">
+              <i class="fa-solid fa-vial mr-2 text-emerald-400"></i> Langsung ke Kuis
+            </a>
+          </div>
+        </div>
+        <!-- Decorative SVG Overlay -->
+        <div class="absolute right-0 bottom-0 top-0 opacity-10 pointer-events-none flex items-center pr-8">
+          <i class="fa-solid fa-microchip text-[280px]"></i>
+        </div>
+      </div>
+
+      <!-- Search Result Banner Notice -->
+      <div id="searchNotice" class="hidden p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 rounded-xl text-xs text-amber-800 dark:text-amber-300">
+        <i class="fa-solid fa-filter mr-1.5"></i> Menampilkan hasil pencarian untuk: <strong id="searchQueryText"></strong>.
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 1: FUNDAMENTAL SISTEM KOMPUTER -->
+      <!-- ========================================================================= -->
+      <section id="bab1" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 01</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Pengantar & Fundamental Sistem Komputer</h2>
+          </div>
+          <button onclick="toggleBookmark('bab1')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition" title="Simpan Bookmark">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p class="leading-relaxed">
+            Secara etimologis, kata <strong>Komputer</strong> berasal dari bahasa Latin <em>"Computare"</em> yang bermakna menghitung atau mengkalkulasi. Namun dalam terminologi ilmu komputer modern, komputer didefinisikan sebagai seperangkat alat elektronik terintegrasi yang mampu menerima data mentah (Input), mengolah data tersebut berdasarkan serangkaian instruksi terprogram (Processing), menghasilkan informasi yang terstruktur (Output), serta menyimpan seluruh hasil data secara permanen atau sementara (Storage).
+          </p>
+
+          <!-- SVG Diagram: Arsitektur Von Neumann -->
+          <div class="my-8 p-6 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 text-center">Diagram Arsitektur Komputer Von Neumann</h4>
+            <div class="max-w-2xl mx-auto">
+              <svg viewBox="0 0 600 300" class="w-full h-auto">
+                <rect x="20" y="100" width="110" height="100" rx="10" fill="#6366f1" opacity="0.15" stroke="#6366f1" stroke-width="2"/>
+                <text x="75" y="145" text-anchor="middle" fill="currentColor" class="font-bold text-xs">Perangkat Input</text>
+                <text x="75" y="165" text-anchor="middle" fill="currentColor" class="text-[10px] opacity-75">(Keyboard, Mouse)</text>
+
+                <rect x="180" y="40" width="240" height="220" rx="12" fill="#0284c7" opacity="0.1" stroke="#0284c7" stroke-width="2" stroke-dasharray="4"/>
+                <text x="300" y="65" text-anchor="middle" fill="#0284c7" class="font-extrabold text-xs uppercase tracking-wider">Central Processing Unit (CPU)</text>
+
+                <rect x="200" y="85" width="200" height="60" rx="8" fill="#0284c7" opacity="0.2" stroke="#0284c7" stroke-width="1.5"/>
+                <text x="300" y="112" text-anchor="middle" fill="currentColor" class="font-bold text-xs">Control Unit (CU)</text>
+                <text x="300" y="130" text-anchor="middle" fill="currentColor" class="text-[10px] opacity-75">Pengendali Instruksi</text>
+
+                <rect x="200" y="160" width="200" height="80" rx="8" fill="#0d9488" opacity="0.2" stroke="#0d9488" stroke-width="1.5"/>
+                <text x="300" y="195" text-anchor="middle" fill="currentColor" class="font-bold text-xs">Arithmetic Logic Unit (ALU)</text>
+                <text x="300" y="215" text-anchor="middle" fill="currentColor" class="text-[10px] opacity-75">Registers & Logika</text>
+
+                <rect x="470" y="100" width="110" height="100" rx="10" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2"/>
+                <text x="525" y="145" text-anchor="middle" fill="currentColor" class="font-bold text-xs">Perangkat Output</text>
+                <text x="525" y="165" text-anchor="middle" fill="currentColor" class="text-[10px] opacity-75">(Monitor, Printer)</text>
+
+                <path d="M 130 150 L 180 150" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+                <path d="M 420 150 L 470 150" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+              </svg>
+            </div>
+            <p class="text-xs text-slate-500 text-center mt-3 font-light">
+              Arsitektur Von Neumann memisahkan unit pemroses (CPU) dari memori penyimpanan, di mana data dan program berbagi jalur bus data yang sama.
+            </p>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">1.1 Perbandingan Arsitektur: Von Neumann vs Harvard</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-700/40 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-indigo-600 dark:text-indigo-400 text-sm mb-2"><i class="fa-solid fa-microchip mr-2"></i>Arsitektur Von Neumann</h4>
+              <ul class="space-y-2 list-disc list-inside">
+                <li>Menggunakan memori tunggal untuk menyimpan instruksi (program) sekaligus data.</li>
+                <li>Menyebabkan fenomena <em>"Von Neumann Bottleneck"</em> karena CPU harus menunggu giliran bus data saat mengambil instruksi dan data secara bergantian.</li>
+                <li>Digunakan pada mayoritas komputer personal (PC), laptop, dan server umum.</li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-700/40 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-teal-600 dark:text-teal-400 text-sm mb-2"><i class="fa-solid fa-network-wired mr-2"></i>Arsitektur Harvard</h4>
+              <ul class="space-y-2 list-disc list-inside">
+                <li>Memisahkan memori instruksi dan memori data dalam jalur bus fisik yang terisolasi.</li>
+                <li>Memungkinkan pembacaan instruksi dan eksekusi data terjadi secara paralel pada waktu yang bersamaan.</li>
+                <li>Banyak diimplementasikan pada Digital Signal Processor (DSP), mikrokontroler (Arduino), dan prosesor ARM modern.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">1.2 Klasifikasi Komputer Berdasarkan Skala & Fungsi</h3>
+          <p>
+            Komputer dikelompokkan ke dalam beberapa tingkatan berdasarkan daya komputasi, kapasitas memori, serta peruntukan penggunaannya:
+          </p>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg border-l-4 border-indigo-500">
+              <strong>1. Supercomputer:</strong> Komputer paralel masif berkecepatan ekstra tinggi (diukur dalam PFLOPS / ExaFLOPS) untuk pemodelan iklim global, riset nuklir, dan kecerdasan buatan skala masif (Cth: Frontier, Fugaku).
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg border-l-4 border-teal-500">
+              <strong>2. Mainframe Computer:</strong> Komputer besar yang mengutamakan keandalan pemrosesan transaksi berkecepatan tinggi tanpa terhenti (zero downtime). Digunakan perbankan nasional dan maskapai penerbangan.
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg border-l-4 border-amber-500">
+              <strong>3. Minicomputer / Workstation:</strong> Komputer kelas menengah berspesifikasi tinggi untuk manipulasi grafis 3D, simulasi teknik rekayasa, serta server lokal perusahaan.
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg border-l-4 border-purple-500">
+              <strong>4. Microcomputer / Personal Computer (PC):</strong> Komputer pengguna akhir berupa desktop, laptop, tablet, hingga smartphone berbasis mikroprosesor tunggal.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 2: SEJARAH LENGKAP & EVOLUSI KOMPUTER -->
+      <!-- ========================================================================= -->
+      <section id="bab2" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 02</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Sejarah & Evolusi Perkembangan Komputer</h2>
+          </div>
+          <button onclick="toggleBookmark('bab2')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Evolusi komputer tidak terjadi secara instan, melainkan melalui ribuan tahun eksperimen alat hitung mekanis hingga penemuan fisika semikonduktor tingkat tinggi.
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">2.1 Masa Pra-Mekanis & Mekanis Kuno</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-indigo-500 block mb-1">Abacus (3000 SM)</span>
+              Alat komputasi tertua berbentuk bingkai kayu bertali biji-bijian geser yang digunakan oleh peradaban Mesopotamia dan Tiongkok kuno untuk perhitungan aritmatika dasar.
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-indigo-500 block mb-1">Pascaline (1642)</span>
+              Diciptakan oleh matematika Prancis <strong>Blaise Pascal</strong>. Merupakan kalkulator mekanis roda gigi (gear) kuno pertama untuk penjumlahan dan pengurangan numerik otomatis.
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-indigo-500 block mb-1">Analytical Engine (1837)</span>
+              Dirancang oleh <strong>Charles Babbage</strong> ("Bapak Komputer"). Mesin mekanis ini sudah memiliki komponen Mill (CPU), Store (Memori), dan instruksi kartu berlubang (Punched Card) buatan <strong>Ada Lovelace</strong> (Programmer pertama di dunia).
+            </div>
+          </div>
+
+          <!-- Chronological Timeline Generasi 1-5 -->
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-4">2.2 Lima Generasi Komputer Modern</h3>
+          
+          <div class="space-y-6 border-l-2 border-indigo-500 pl-4 sm:pl-6 ml-2">
+            
+            <!-- Generasi 1 -->
+            <div class="relative">
+              <div class="absolute -left-[25px] sm:-left-[33px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white dark:border-slate-800"></div>
+              <span class="px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-extrabold text-[10px] rounded-full uppercase">1940 - 1956</span>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mt-1">Generasi I: Tabung Hampa Udara (Vacuum Tubes)</h4>
+              <p class="text-xs leading-relaxed mt-2">
+                Menggunakan ribuan tabung hampa udara sebagai komponen sakelar sirkuit utama. Berukuran raksasa, mengonsumsi listrik hingga puluhan kilowatt, menghasilkan panas tinggi, serta rentan terbakar.
+              </p>
+              <div class="mt-2 text-xs bg-slate-50 dark:bg-slate-700/40 p-3 rounded-lg">
+                <strong>Contoh Epik:</strong> <em>ENIAC (1946)</em> seberat 30 ton dengan 18.000 tabung hampa; <em>UNIVAC I</em> (komputer komersial pertama); serta <em>EDVAC</em> yang memperkenalkan arsitektur Stored-Program.
+              </div>
+            </div>
+
+            <!-- Generasi 2 -->
+            <div class="relative">
+              <div class="absolute -left-[25px] sm:-left-[33px] top-1.5 w-4 h-4 rounded-full bg-teal-500 border-4 border-white dark:border-slate-800"></div>
+              <span class="px-2.5 py-0.5 bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 font-extrabold text-[10px] rounded-full uppercase">1956 - 1963</span>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mt-1">Generasi II: Penemuan Transistor</h4>
+              <p class="text-xs leading-relaxed mt-2">
+                Tabung hampa digantikan oleh <strong>Transistor</strong> semikonduktor penemuan Bell Labs (1947). Ukuran fisik berkurang hingga 1/10, daya listrik berkurang drastis, serta tingkat keandalan meningkat signifikan. Lahir bahasa tingkat tinggi seperti FORTRAN dan COBOL.
+              </p>
+              <div class="mt-2 text-xs bg-slate-50 dark:bg-slate-700/40 p-3 rounded-lg">
+                <strong>Contoh Epik:</strong> IBM 7090, IBM 1401, dan UNIVAC III.
+              </div>
+            </div>
+
+            <!-- Generasi 3 -->
+            <div class="relative">
+              <div class="absolute -left-[25px] sm:-left-[33px] top-1.5 w-4 h-4 rounded-full bg-amber-500 border-4 border-white dark:border-slate-800"></div>
+              <span class="px-2.5 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-extrabold text-[10px] rounded-full uppercase">1964 - 1971</span>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mt-1">Generasi III: Integrated Circuit (IC / Chip)</h4>
+              <p class="text-xs leading-relaxed mt-2">
+                Ditemukan oleh Jack Kilby dan Robert Noyce. Ribuan transistor mini dipadukan ke dalam kepingan tunggal silikon (Integrated Circuit). Mulai digunakannya Keyboard, Monitor visual, serta Sistem Operasi pemroses multitasking sederhana.
+              </p>
+              <div class="mt-2 text-xs bg-slate-50 dark:bg-slate-700/40 p-3 rounded-lg">
+                <strong>Contoh Epik:</strong> IBM System/360 dan PDP-8.
+              </div>
+            </div>
+
+            <!-- Generasi 4 -->
+            <div class="relative">
+              <div class="absolute -left-[25px] sm:-left-[33px] top-1.5 w-4 h-4 rounded-full bg-purple-500 border-4 border-white dark:border-slate-800"></div>
+              <span class="px-2.5 py-0.5 bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-extrabold text-[10px] rounded-full uppercase">1971 - Sekarang</span>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mt-1">Generasi IV: Mikroprosesor & VLSI</h4>
+              <p class="text-xs leading-relaxed mt-2">
+                Integrasi skala sangat besar (VLSI / ULSI) memadukan jutaan hingga miliaran transistor ke dalam satu keping Mikroprosesor tunggal (dimulai dari Intel 4004 pada 1971). Memicu lahirnya revolusi Personal Computer (PC), Komputer Apple, laptop, dan jaringan internet global.
+              </p>
+            </div>
+
+            <!-- Generasi 5 -->
+            <div class="relative">
+              <div class="absolute -left-[25px] sm:-left-[33px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white dark:border-slate-800"></div>
+              <span class="px-2.5 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-extrabold text-[10px] rounded-full uppercase">Generasi Masa Depan</span>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mt-1">Generasi V: Kecerdasan Buatan & Komputasi Kuantum</h4>
+              <p class="text-xs leading-relaxed mt-2">
+                Fokus pada pemrosesan paralel masif, jaringan saraf tiruan (Deep Learning / AI), serta sistem <strong>Quantum Computing</strong> yang memanfaatkan superposisi dan keterkaitan kuantum (Qubits) untuk memecahkan perhitungan kompleks juta kali lebih cepat dibanding superkomputer konvensional.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 3: HARDWARE - INPUT DEVICE -->
+      <!-- ========================================================================= -->
+      <section id="bab3" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 03</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Perangkat Keras (Hardware) - Input Device</h2>
+          </div>
+          <button onclick="toggleBookmark('bab3')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Perangkat masukan (Input Device) adalah segmen hardware yang mengonversi sinyal fisik dunia nyata (gerakan jari, suara, dokumen cetak, pola retina) menjadi deretan sinyal digital berupa kode biner (0 dan 1) yang dapat diterjemahkan oleh memori dan CPU.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
+                <i class="fa-solid fa-keyboard text-base"></i>
+                <h4>1. Keyboard & Switch Mekanikal</h4>
+              </div>
+              <p>
+                Menggunakan susunan matriks tombol. Saat tombol ditekan, sirkuit tertutup mendeteksi koordinat matriks baris-kolom dan mengirimkan <em>Scan Code</em> ke mikrokarakter encoder (ASCII/Scan code keyboard).
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="flex items-center space-x-2 text-teal-600 dark:text-teal-400 font-bold text-sm">
+                <i class="fa-solid fa-computer-mouse text-base"></i>
+                <h4>2. Mouse Optik / Laser</h4>
+              </div>
+              <p>
+                Menggunakan sensor kamera CMOS mikro berkecepatan tinggi (ribuan potret per detik) dan LED/laser infra-merah untuk mendeteksi pergeseran pola tekstur permukaan (DPI - Dots Per Inch).
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="flex items-center space-x-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+                <i class="fa-solid fa-[#000] fa-fingerprint text-base"></i>
+                <h4>3. Sensor Biometrik</h4>
+              </div>
+              <p>
+                Scanner sidik jari kapasitif mendeteksi perbedaan muatan listrik antara celah dan bukit kulit jari manusia untuk verifikasi otentikasi data keamanan enkripsi tinggi.
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-400 font-bold text-sm">
+                <i class="fa-solid fa-microchip text-base"></i>
+                <h4>4. Sensor IoT & ADC</h4>
+              </div>
+              <p>
+                Sensor suhu, kelembaban, atau gyro memicu sinyal analog yang dikonversi oleh <em>Analog-to-Digital Converter (ADC)</em> menjadi data digital biner bagi mikroprosesor.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 4: HARDWARE - CPU & MEMORI UTAMA -->
+      <!-- ========================================================================= -->
+      <section id="bab4" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 04</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Perangkat Keras (Hardware) - CPU & Memori Utama</h2>
+          </div>
+          <button onclick="toggleBookmark('bab4')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Unit Pemrosesan Sentral (CPU) adalah komputasi inti. CPU bekerja dalam siklus tiada henti yang disebut <strong>Fetch - Decode - Execute - Store Cycle</strong>.
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">4.1 Komponen Internal CPU</h3>
+          <ul class="space-y-3 text-xs list-disc list-inside">
+            <li><strong>Control Unit (CU):</strong> Bertindak sebagai polisi lalu lintas instruksi. Mengambil instruksi dari RAM, menerjemahkan kode op-code, dan mengatur timing sirkuit.</li>
+            <li><strong>Arithmetic Logic Unit (ALU):</strong> Mengeksekusi perhitungan matematika biner (+, -, *, /) serta perbandingan logika boolean (AND, OR, NOT, XOR).</li>
+            <li><strong>Registers:</strong> Memori internal ultra-cepat berada langsung di dalam die silikon CPU (seperti Program Counter, Accumulator, Instruction Register) dengan latensi waktu akses terendah (&lt;1 nanosekon).</li>
+            <li><strong>Clock Speed & Multi-Core:</strong> Kecepatan ditentukan frekuensi clock (GHz / miliaran siklus per detik). Prosesor modern menggabungkan banyak inti terpisah (Cores / Threads) untuk komputasi paralel.</li>
+          </ul>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">4.2 Hirarki Memori Komputer</h3>
+          <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <p class="text-xs mb-3 font-semibold text-center">Tingkatan Memori dari Yang Tercepat/Terkecil hingga Terlambat/Terbesar:</p>
+            <div class="max-w-md mx-auto space-y-1 text-[11px] text-center font-bold text-white">
+              <div class="bg-rose-600 py-1.5 rounded-t-lg shadow">1. CPU Registers (&lt;1 KB) - Tercepat</div>
+              <div class="bg-indigo-600 py-1.5 shadow">2. Cache L1, L2, L3 (MB)</div>
+              <div class="bg-teal-600 py-1.5 shadow">3. Primary RAM (GB)</div>
+              <div class="bg-amber-600 py-1.5 shadow">4. Secondary SSD / NVMe Storage (TB)</div>
+              <div class="bg-slate-600 py-1.5 rounded-b-lg shadow">5. Cloud & Archive Storage - Terlambat</div>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">4.3 Perbandingan RAM, ROM, & Virtual Memory</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-indigo-600 dark:text-indigo-400 block mb-1">RAM (Random Access Memory)</span>
+              Bersifat <strong>Volatile</strong> (data terhapus saat listrik mati). Menyimpan data aplikasi yang sedang aktif berjalan. Jenis populer: DDR4, DDR5.
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-teal-600 dark:text-teal-400 block mb-1">ROM (Read Only Memory)</span>
+              Bersifat <strong>Non-Volatile</strong> (permanen). Menyimpan instruksi dasar inisialisasi awal komputer (Firmware BIOS / UEFI).
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-amber-600 dark:text-amber-400 block mb-1">Virtual Memory</span>
+              Alokasi area pada SSD/HDD (Paging File) yang dimanfaatkan OS sebagai memori cadangan ketika kapasitas RAM fisik terpakai penuh.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 5: HARDWARE - OUTPUT & STORAGE -->
+      <!-- ========================================================================= -->
+      <section id="bab5" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 05</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Perangkat Keras (Hardware) - Output & Storage</h2>
+          </div>
+          <button onclick="toggleBookmark('bab5')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Data yang telah selesai diolah oleh CPU harus dikonversi kembali ke bentuk yang dapat dipahami manusia (Output) atau disimpan ke dalam media non-volatile jangka panjang (Secondary Storage).
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">5.1 Perangkat Output Utama</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1"><i class="fa-solid fa-desktop text-indigo-500 mr-2"></i>Monitor Visual (IPS, OLED)</h4>
+              <p>
+                Menampilkan piksel warna RGB. OLED menggunakan dioda yang dapat memancarkan cahaya mandiri per piksel (rasio kontras tak terhingga), sedangkan IPS mengandalkan lapisan kristal cair dengan backlight LED.
+              </p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1"><i class="fa-solid fa-print text-teal-500 mr-2"></i>Printer Inkjet vs Laser</h4>
+              <p>
+                Inkjet menyemprotkan titik tinta cair mikroskopis. Printer Laser menggunakan sinar laser untuk menembakkan muatan elektrostatis pada drum, yang kemudian menarik serbuk toner kering sebelum dipanaskan ke kertas.
+              </p>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">5.2 Teknologi Media Penyimpanan Sekunder</h3>
+          <div class="space-y-3 text-xs">
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <strong class="text-indigo-600 dark:text-indigo-400">HDD (Hard Disk Drive):</strong> Menggunakan piringan magnetik berputar (RPM 5400/7200) dan head mekanis baca/tulis. Kecepatan terbatas (100-200 MB/s), rentan rusak akibat guncangan fisik.
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <strong class="text-teal-600 dark:text-teal-400">SSD SATA & NVMe M.2:</strong> Tanpa komponen bergerak, menggunakan chip NAND Flash Memory. NVMe memanfaatkan jalur PCI Express untuk mentransfer data berkecepatan tinggi (3500 - 7000+ MB/s).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 6: PERANGKAT LUNAK (SOFTWARE) -->
+      <!-- ========================================================================= -->
+      <section id="bab6" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 06</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Perangkat Lunak (Software) & Pemrograman</h2>
+          </div>
+          <button onclick="toggleBookmark('bab6')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Software adalah kumpulan program, aturan, atau prosedur terstruktur yang memberi tahu komputer apa yang harus dilakukan.
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">6.1 Hirarki & Kategori Software</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-purple-600 dark:text-purple-400 text-sm mb-2">1. Sistem Operasi (OS)</h4>
+              <p>Software lapisan dasar pengelola hardware (Memory management, Process scheduling, File system, Device driver). Contoh: Windows, macOS, Linux, Android, iOS.</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-purple-600 dark:text-purple-400 text-sm mb-2">2. Software Aplikasi</h4>
+              <p>Program khusus membantu tugas spesifik end-user. Contoh: Web Browser, Adobe Creative Cloud, Microsoft Office, Aplikasi Database.</p>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">6.2 Bahasa Pemrograman & Translasi Kode</h3>
+          <p class="text-xs leading-relaxed">
+            Bahasa pemrograman dibagi dari <strong>Low-Level</strong> (Bahasa Mesin biner 0/1 & Assembly) hingga <strong>High-Level</strong> (Python, C++, Java, JavaScript) yang mudah dipahami manusia. Kode program diproses menjadi instruksi mesin melalui dua cara utama:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <strong>Compiler:</strong> Menerjemahkan seluruh kode sumber (source code) sekaligus menjadi satu file biner executable (.exe) sebelum dijalankan. (Cth: C, C++, Rust, Go).
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <strong>Interpreter:</strong> Menerjemahkan dan mengeksekusi kode sumber baris demi baris secara bertahap saat program berjalan. (Cth: Python, JavaScript, PHP).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 7: SISTEM BILANGAN & REPRESENTASI DATA -->
+      <!-- ========================================================================= -->
+      <section id="bab7" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 07</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Sistem Bilangan & Representasi Data Digital</h2>
+          </div>
+          <button onclick="toggleBookmark('bab7')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Komputer bekerja menggunakan sinyal listrik terputus (Ada arus = 1, Tidak ada arus = 0). Oleh karena itu, seluruh representasi teks, gambar, dan audio dikonversi ke dalam sistem bilangan biner.
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">7.1 Empat Basis Sistem Bilangan Utama</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-center">
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-extrabold text-indigo-600 dark:text-indigo-400 text-sm block">Desimal (Basis 10)</span>
+              Simbol: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Sistem hitung manusia sehari-hari.
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-extrabold text-teal-600 dark:text-teal-400 text-sm block">Biner (Basis 2)</span>
+              Simbol: 0 dan 1. Bahasa asli mesin sirkuit transpor data.
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-extrabold text-amber-600 dark:text-amber-400 text-sm block">Oktal (Basis 8)</span>
+              Simbol: 0, 1, 2, 3, 4, 5, 6, 7.
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="font-extrabold text-purple-600 dark:text-purple-400 text-sm block">Heksadesimal (Basis 16)</span>
+              Simbol: 0-9 & A-F (A=10, F=15). Digunakan untuk kode warna HTML & alamat memori.
+            </div>
+          </div>
+
+          <!-- Konversi Bilangan Interactive Widget -->
+          <div class="my-6 p-5 bg-indigo-50/50 dark:bg-slate-900/60 rounded-2xl border border-indigo-100 dark:border-slate-700">
+            <h4 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 mb-3 flex items-center">
+              <i class="fa-solid fa-calculator mr-2"></i>Kalkulator Konversi Bilangan Biner & Desimal
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block mb-1 font-medium">Input Angka Desimal:</label>
+                <input type="number" id="decInput" oninput="convertDecimal()" value="25" placeholder="Masukkan desimal..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div class="space-y-1">
+                <p>Biner (Basis 2): <strong id="binResult" class="text-indigo-600 dark:text-indigo-400 font-mono text-sm">11001</strong></p>
+                <p>Heksadesimal: <strong id="hexResult" class="text-teal-600 dark:text-teal-400 font-mono text-sm">19</strong></p>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">7.2 Standar Enkoding Teks: ASCII & Unicode</h3>
+          <ul class="space-y-2 text-xs list-disc list-inside">
+            <li><strong>ASCII (7-bit / 8-bit):</strong> Standar karakter awal mewakili 128 - 256 karakter alfabet Inggris, angka, dan simbol kontrol. (Cth: Karakter 'A' = 65 desimal = 01000001 biner).</li>
+            <li><strong>Unicode (UTF-8, UTF-16):</strong> Mampu menampung lebih dari 149.000 karakter termasuk simbol bahasa Mandarin, Arab, Kiril, hingga Emoji modern.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 8: JARINGAN KOMPUTER & INTERNET DASAR -->
+      <!-- ========================================================================= -->
+      <section id="bab8" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 08</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Jaringan Komputer & Internet Dasar</h2>
+          </div>
+          <button onclick="toggleBookmark('bab8')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Jaringan komputer adalah sistem penghubung antara dua atau lebih node komputer menggunakan media transmisi kabel (UTP/Kabel Fiber Optik) atau nirkabel (Wi-Fi/Cellular) untuk saling berbagi data dan sumber daya.
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">8.1 Model Referensi OSI (7 Layers) vs TCP/IP</h3>
+          <div class="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2">7 Lapisan OSI Model (Open Systems Interconnection)</h4>
+                <ol class="space-y-1 list-decimal list-inside font-medium">
+                  <li>Layer 7: Application (HTTP, FTP, SMTP)</li>
+                  <li>Layer 6: Presentation (Encryption, SSL/TLS)</li>
+                  <li>Layer 5: Session (RPC, NetBIOS)</li>
+                  <li>Layer 4: Transport (TCP, UDP)</li>
+                  <li>Layer 3: Network (IP Address, Router)</li>
+                  <li>Layer 2: Data Link (MAC Address, Switch)</li>
+                  <li>Layer 1: Physical (Ethernet, Fiber Optic)</li>
+                </ol>
+              </div>
+              <div class="space-y-2">
+                <h4 class="font-bold text-teal-600 dark:text-teal-400">Komponen Kunci Jaringan Internet</h4>
+                <p><strong>IP Address (IPv4 / IPv6):</strong> Alamat numerik unik penerima paket data internet. (Cth IPv4: 192.168.1.1).</p>
+                <p><strong>DNS (Domain Name System):</strong> Buku telepon internet yang menerjemahkan nama domain web (google.com) menjadi IP address numerik.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 9: KEAMANAN KOMPUTER & ETIKA DIGITAL -->
+      <!-- ========================================================================= -->
+      <section id="bab9" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">BAB 09</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Keamanan Komputer & Etika Digital</h2>
+          </div>
+          <button onclick="toggleBookmark('bab9')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-6 text-slate-700 dark:text-slate-300">
+          <p>
+            Di era konektivitas digital masif, perlindungan aset informasi pribadi dan organisasi menjadi hal yang kritikal dari ancaman kejahatan siber (Cybercrime).
+          </p>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">9.1 Jenis-jenis Ancaman Malware</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <strong class="text-rose-600 dark:text-rose-400 block mb-1"><i class="fa-solid fa-bug mr-1"></i>Virus & Worm</strong>
+              Program jahat menginfeksi file executable dan menggandakan diri secara mandiri melalui jaringan lokal untuk melumpuhkan trafik.
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <strong class="text-rose-600 dark:text-rose-400 block mb-1"><i class="fa-solid fa-user-ninja mr-1"></i>Trojan Horse</strong>
+              Software jahat yang menyamar sebagai aplikasi berguna asli untuk membuka pintu belakang (Backdoor) bagi peretas.
+            </div>
+            <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-lg border border-slate-200 dark:border-slate-700">
+              <strong class="text-rose-600 dark:text-rose-400 block mb-1"><i class="fa-solid fa-lock mr-1"></i>Ransomware</strong>
+              Malware yang mengenkripsi seluruh dokumen pengguna dan meminta tebusan uang kripto untuk mendapatkan kunci dekripsi.
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white pt-2">9.2 Pilar Perlindungan Siber & Ergonomi</h3>
+          <ul class="space-y-2 text-xs list-disc list-inside">
+            <li><strong>Enkripsi Data (AES-256 & RSA):</strong> Mengacak pesan menjadi ciphertext yang tak teruji tanpa kunci rahasia.</li>
+            <li><strong>MFA (Multi-Factor Authentication):</strong> Perlindungan verifikasi ganda (Kata sandi + Aplikasi Authenticator / OTP).</li>
+            <li><strong>K3 / Ergonomi Komputer:</strong> Menjaga posisi duduk tegak, sudut mata sejajar layar 50-70 cm, dan istirahat mata aturan 20-20-20 untuk mencegah Carpal Tunnel Syndrome & kelelahan mata.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- BAB 10: RANGKUMAN, GLOSARIUM & KUIS EVALUASI MODUL (20 SOAL) -->
+      <!-- ========================================================================= -->
+      <section id="bab10" class="module-card searchable-section bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-700 relative">
+        <div class="flex justify-between items-start mb-6 border-b border-slate-100 dark:border-slate-700/60 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">BAB 10</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Rangkuman, Glosarium & Kuis Evaluasi Modul</h2>
+          </div>
+          <button onclick="toggleBookmark('bab10')" class="bookmark-btn p-2 rounded-lg text-slate-400 hover:text-amber-500 transition">
+            <i class="fa-regular fa-bookmark text-xl"></i>
+          </button>
+        </div>
+
+        <div class="module-body space-y-8 text-slate-700 dark:text-slate-300">
+          
+          <!-- Rangkuman Ringkas -->
+          <div class="p-5 bg-indigo-50/60 dark:bg-slate-900/60 rounded-2xl border border-indigo-100 dark:border-slate-700">
+            <h3 class="text-base font-bold text-indigo-900 dark:text-indigo-300 mb-2"><i class="fa-solid fa-list-check mr-2"></i>Rangkuman Eksekutif Modul</h3>
+            <p class="text-xs leading-relaxed">
+              Komputer telah bertransformasi dari alat kalkulasi mekanis sederhana menjadi sistem elektronik super kompleks berbasis mikrokontroler & AI. Keberhasilan sistem komputer bersandar penuh pada harmoni tiga pilar: Hardware (komponen fisik), Software (instruksi terprogram), dan Brainware (manusia pengembang/operator).
+            </p>
+          </div>
+
+          <!-- Glosarium Istilah -->
+          <div id="glosarium" class="pt-2">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4"><i class="fa-solid fa-spell-check text-teal-500 mr-2"></i>Glosarium Istilah Komputer</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg"><strong>ALU:</strong> Arithmetic Logic Unit, komponen CPU penangan operasi murni matematika & logika.</div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg"><strong>BIOS:</strong> Basic Input/Output System, firmware pertama yang dimuat saat booting awal.</div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg"><strong>Cache Memory:</strong> Memori ultra-cepat penampung instruksi yang paling sering diakses CPU.</div>
+              <div class="p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg"><strong>GUI:</strong> Graphical User Interface, antarmuka komputer berbasis elemen visual grafis.</div>
+            </div>
+          </div>
+
+          <!-- SECTION KUIS EVALUASI (20 SOAL INTERAKTIF) -->
+          <div id="kuis-section" class="pt-6 border-t border-slate-200 dark:border-slate-700">
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="p-3 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 rounded-xl">
+                <i class="fa-solid fa-graduation-cap text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kuis Evaluasi Modul (20 Soal Pilihan Ganda)</h3>
+                <p class="text-xs text-slate-500">Uji pemahaman komprehensif Anda dari Bab 1 hingga Bab 9.</p>
+              </div>
+            </div>
+
+            <!-- Form Kuis 20 Soal -->
+            <form id="quizForm" class="space-y-6">
+              <div id="quizContainer" class="space-y-4">
+                <!-- JavaScript akan merender 20 soal secara dinamis di sini -->
+              </div>
+
+              <button type="button" onclick="submitFullQuiz()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center justify-center">
+                <i class="fa-solid fa-paper-plane mr-2"></i>Kirim & Evaluasi Jawaban Kuis
+              </button>
+            </form>
+
+            <!-- Quiz Result Output Box -->
+            <div id="quizResultBox" class="hidden mt-8 p-6 rounded-2xl border text-center space-y-4"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CATATAN PRIBADI & BOOKMARKS USER SECTION -->
+      <section id="catatan-pribadi" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-700 no-print">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 flex items-center">
+          <i class="fa-solid fa-pen-to-square text-amber-500 mr-2"></i>Catatan Pembelajaran Pribadi
+        </h3>
+        <p class="text-xs text-slate-500 mb-4">Tulis ringkasan atau poin penting Anda sendiri di sini. Catatan tersimpan di browser lokal Anda.</p>
+        <textarea id="userNotes" rows="5" oninput="saveNotes()" placeholder="Ketik catatan studi Anda di sini..." class="w-full p-3.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 dark:text-slate-200"></textarea>
+        <span id="saveNotice" class="text-[10px] text-emerald-500 font-semibold mt-1 hidden"><i class="fa-solid fa-check mr-1"></i>Tersimpan!</span>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // DATA 20 SOAL KUIS EVALUASI LENGKAP
+    const quizData = [
+      { q: "1. Tokoh yang dijuluki 'Bapak Komputer' atas rancangan Analytical Engine adalah...", a: ["Alan Turing", "Charles Babbage", "Blaise Pascal", "John von Neumann"], correct: 1, exp: "Charles Babbage merancang Difference & Analytical Engine yang menjadi dasar arsitektur komputer modern." },
+      { q: "2. Kelemahan utama Arsitektur Von Neumann yang dipicu oleh berbagi jalur bus data dan instruksi tunggal disebut...", a: ["Von Neumann Bottleneck", "Thermal Throttling", "Bus Delay", "Cache Miss"], correct: 0, exp: "Von Neumann Bottleneck terjadi karena CPU harus mengantre saat mengambil data dan instruksi pada bus yang sama." },
+      { q: "3. Komputer Generasi Pertama (1940-1956) seperti ENIAC mengandalkan teknologi utama berupa...", a: ["Transistor", "Tabung Hampa Udara (Vacuum Tube)", "Integrated Circuit", "Mikroprosesor"], correct: 1, exp: "Generasi pertama menggunakan tabung hampa udara yang membutuhkan listrik masif dan berukuran besar." },
+      { q: "4. Komponen CPU yang bertanggung jawab langsung mengeksekusi perhitungan matematika biner dan logika boolean adalah...", a: ["Control Unit (CU)", "Register", "Arithmetic Logic Unit (ALU)", "Cache"], correct: 2, exp: "ALU mengeksekusi kalkulasi aritmatika (+, -) dan logika boolean (AND, OR, NOT)." },
+      { q: "5. Memori utama yang bersifat Volatile (data hilang ketika arus listrik terputus) adalah...", a: ["ROM", "NVMe SSD", "RAM", "Flash Drive"], correct: 2, exp: "RAM bersifat Volatile dan hanya menyimpan data aplikasi yang sedang aktif." },
+      { q: "6. Di antara pilihan berikut, manakah jenis SSD yang memiliki kecepatan transfer data paling tinggi?", a: ["SATA III SSD", "NVMe M.2 PCIe", "HDD 7200 RPM", "Floppy Disk"], correct: 1, exp: "NVMe memanfaatkan jalur PCIe berkecepatan tinggi mencapai 3500 - 7000+ MB/s." },
+      { q: "7. Bahasa pemrograman yang dieksekusi secara bertahap baris demi baris oleh Interpreter tanpa kompilasi awal file .exe adalah...", a: ["C++", "Python", "Rust", "Assembly"], correct: 1, exp: "Python adalah bahasa tingkat tinggi yang menggunakan Interpreter." },
+      { q: "8. Konversi angka desimal 25 ke dalam bentuk sistem bilangan biner adalah...", a: ["11001", "10101", "11100", "10011"], correct: 0, exp: "25 desimal = 16 + 8 + 1 = (11001) biner." },
+      { q: "9. Karakter 'A' dalam tabel kode standar ASCII diwakili oleh nilai desimal...", a: ["48", "65", "97", "128"], correct: 1, exp: "Dalam kode ASCII, huruf kapital 'A' bernilai desimal 65 (biner 01000001)." },
+      { q: "10. Lapisan (Layer) ke-3 pada model referensi OSI yang mengatur routing IP Address adalah...", a: ["Application Layer", "Transport Layer", "Network Layer", "Physical Layer"], correct: 2, exp: "Layer 3 (Network) bertanggung jawab atas pengalamatan logis IP Address dan penentuan rute paket data." },
+      { q: "11. Protocol yang berfungsi menerjemahkan nama domain web (seperti google.com) menjadi alamat IP numerik dinamakan...", a: ["DHCP", "DNS", "FTP", "HTTP"], correct: 1, exp: "DNS (Domain Name System) menerjemahkan domain teks ke IP Address." },
+      { q: "12. Program jahat yang mengunci/mengenkripsi seluruh file dokumen pengguna dan meminta tebusan uang disebut...", a: ["Ransomware", "Spyware", "Adware", "Worm"], correct: 0, exp: "Ransomware mengenkripsi data korban untuk meminta tebusan uang kripto." },
+      { q: "13. Firmware tingkat rendah yang tersimpan permanen pada ROM motherboard untuk inisialisasi awal booting adalah...", a: ["Kernel", "BIOS / UEFI", "Driver", "GUI"], correct: 1, exp: "BIOS/UEFI memuat tes POST dan memanggil bootloader sistem operasi." },
+      { q: "14. Penemuan komponen semikonduktor pengganti tabung hampa yang memicu lahirnya Komputer Generasi Kedua adalah...", a: ["Microprocessor", "Transistor", "Resistor", "Silicon Chip"], correct: 1, exp: "Transistor ditemukan Bell Labs dan menggantikan tabung hampa pada Generasi Ke-2." },
+      { q: "15. Perangkat input biometrik yang mendeteksi perbedaan muatan listrik pada permukaan kulit jari adalah...", a: ["Scanner Optik", "Sensor Sidik Jari Kapasitif", "Webcam", "Stylus"], correct: 1, exp: "Sensor kapasitif mengukur perbedaan muatan listrik pola sidik jari." },
+      { q: "16. Kepingan memori internal CPU berkecepatan paling tinggi namun dengan kapasitas paling kecil adalah...", a: ["RAM DDR5", "Registers", "Cache L3", "ROM"], correct: 1, exp: "CPU Register memiliki latensi akses terendah (<1 ns) langsung di dalam die silikon CPU." },
+      { q: "17. Sistem bilangan yang menggunakan basis 16 dengan simbol 0-9 dan A-F adalah...", a: ["Oktal", "Heksadesimal", "Biner", "Desimal"], correct: 1, exp: "Heksadesimal berbasis 16 (0-9 dan A-F)." },
+      { q: "18. Prinsip aturan ergonomic komputer 20-20-20 bertujuan untuk mencegah terjadinya...", a: ["Lupa Password", "Kelelahan Mata Digital (Digital Eye Strain)", "Overheating CPU", "Data Loss"], correct: 1, exp: "Aturan 20-20-20 (tiap 20 menit, tatap objek berjarak 20 kaki selama 20 detik) merilekskan otot mata." },
+      { q: "19. Kombinasi tombol atau perintah yang mengubah kode sumber menjadi program executable tunggal dalam satu proses sekaligus disebut...", a: ["Interpreting", "Compiling (Kompilasi)", "Debugging", "Parsing"], correct: 1, exp: "Compiler mengubah seluruh source code sekaligus menjadi program biner executable." },
+      { q: "20. Teknologi komputer masa depan yang memanfaatkan superposisi dan qubit untuk komputasi paralel dinamakan...", a: ["Quantum Computing", "Mainframe Computing", "Analog Computing", "Cloud Computing"], correct: 0, exp: "Quantum Computing memanfaatkan prinsip fisika kuantum (Qubits) untuk kecepatan komputasi eksponensial." }
+    ];
+
+    // INITIALIZATION ON LOAD
+    window.onload = function() {
+      renderQuizQuestions();
+      loadNotes();
+      updateReadingProgress();
+      convertDecimal();
+    };
+
+    // RENDER QUIZ FORM DYNAMICALLY
+    function renderQuizQuestions() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+
+      quizData.forEach((item, idx) => {
+        const qBox = document.createElement('div');
+        qBox.className = 'p-4 bg-slate-50 dark:bg-slate-700/30 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-3';
+        
+        let optionsHTML = '';
+        item.a.forEach((opt, optIdx) => {
+          optionsHTML += `
+            <label class="flex items-start space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-700/60 transition">
+              <input type="radio" name="q_${idx}" value="${optIdx}" class="mt-0.5 text-indigo-600 focus:ring-indigo-500">
+              <span class="text-slate-700 dark:text-slate-300">${opt}</span>
+            </label>
+          `;
+        });
+
+        qBox.innerHTML = `
+          <p class="font-bold text-slate-900 dark:text-white text-xs">${item.q}</p>
+          <div class="space-y-1">${optionsHTML}</div>
+          <div id="exp_${idx}" class="hidden p-2.5 bg-indigo-50/80 dark:bg-slate-800 rounded-lg text-[11px] border border-indigo-100 dark:border-slate-600"></div>
+        `;
+        container.appendChild(qBox);
+      });
+    }
+
+    // SUBMIT FULL QUIZ EVALUATION
+    function submitFullQuiz() {
+      let score = 0;
+      let total = quizData.length;
+
+      quizData.forEach((item, idx) => {
+        const selected = document.querySelector(`input[name="q_${idx}"]:checked`);
+        const expDiv = document.getElementById(`exp_${idx}`);
+        expDiv.classList.remove('hidden');
+
+        if (selected && parseInt(selected.value) === item.correct) {
+          score++;
+          expDiv.className = "p-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 rounded-lg text-[11px]";
+          expDiv.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i><strong>Benar!</strong> ${item.exp}`;
+        } else {
+          expDiv.className = "p-2.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-700 text-rose-800 dark:text-rose-300 rounded-lg text-[11px]";
+          expDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i><strong>Salah.</strong> Kunci: ${item.a[item.correct]}. ${item.exp}`;
+        }
+      });
+
+      const finalPercent = Math.round((score / total) * 100);
+      const resBox = document.getElementById('quizResultBox');
+      resBox.classList.remove('hidden');
+
+      if (finalPercent >= 80) {
+        resBox.className = "mt-8 p-6 rounded-2xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 text-center space-y-2";
+        resBox.innerHTML = `
+          <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto text-xl shadow-lg"><i class="fa-solid fa-trophy"></i></div>
+          <h3 class="text-xl font-black">Luar Biasa! Skor Anda: ${finalPercent}% (${score}/${total} Benar)</h3>
+          <p class="text-xs">Selamat! Anda memiliki pemahaman akademis yang sangat baik tentang Dasar-Dasar & Sejarah Komputer.</p>
+        `;
+      } else {
+        resBox.className = "mt-8 p-6 rounded-2xl border border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 text-center space-y-2";
+        resBox.innerHTML = `
+          <div class="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center mx-auto text-xl shadow-lg"><i class="fa-solid fa-rotate-right"></i></div>
+          <h3 class="text-xl font-black">Hasil Evaluasi: ${finalPercent}% (${score}/${total} Benar)</h3>
+          <p class="text-xs">Ulas kembali pembahasan jawaban di atas dan pelajari ulang bab materi yang belum dikuasai.</p>
+        `;
+      }
+
+      resBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // NUMBER SYSTEM CONVERSION LOGIC
+    function convertDecimal() {
+      const val = parseInt(document.getElementById('decInput').value);
+      if (isNaN(val)) {
+        document.getElementById('binResult').innerText = "0";
+        document.getElementById('hexResult').innerText = "0";
+        return;
+      }
+      document.getElementById('binResult').innerText = val.toString(2);
+      document.getElementById('hexResult').innerText = val.toString(16).toUpperCase();
+    }
+
+    // READING PROGRESS BAR & SIDEBAR TRACKER
+    window.onscroll = function() { updateReadingProgress(); };
+
+    function updateReadingProgress() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      
+      const pBar = document.getElementById("reading-progress");
+      const sideBarProgress = document.getElementById("progressBar");
+      const pPercentText = document.getElementById("progressPercent");
+
+      if (pBar) pBar.style.width = scrolled + "%";
+      if (sideBarProgress) sideBarProgress.style.width = scrolled + "%";
+      if (pPercentText) pPercentText.innerText = Math.round(scrolled) + "%";
+    }
+
+    // SEARCH FILTER LOGIC
+    function searchModuleContent() {
+      const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+      const sections = document.querySelectorAll('.searchable-section');
+      const notice = document.getElementById('searchNotice');
+      const clearBtn = document.getElementById('clearSearch');
+
+      if (query === '') {
+        notice.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        sections.forEach(sec => sec.style.display = 'block');
+        return;
+      }
+
+      clearBtn.classList.remove('hidden');
+      notice.classList.remove('hidden');
+      document.getElementById('searchQueryText').innerText = `"${query}"`;
+
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        if (text.includes(query)) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    }
+
+    function clearSearchInput() {
+      document.getElementById('globalSearch').value = '';
+      searchModuleContent();
+    }
+
+    // FONT SIZE ADJUSTER
+    function setFontSize(size) {
+      document.body.classList.remove('fs-sm', 'fs-md', 'fs-lg');
+      document.body.classList.add('fs-' + size);
+    }
+
+    // THEME TOGGLE
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // SIDEBAR MOBILE CONTROLS
+    const sidebar = document.getElementById('sidebar');
+    document.getElementById('sidebarToggle').addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+    document.getElementById('closeSidebar').addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full');
+      });
+    });
+
+    // BOOKMARK TOGGLE & LOCALSTORAGE
+    function toggleBookmark(babId) {
+      const key = 'bookmark_' + babId;
+      const current = localStorage.getItem(key);
+      if (current === 'true') {
+        localStorage.removeItem(key);
+        alert('Bookmark untuk ' + babId.toUpperCase() + ' dihapus.');
+      } else {
+        localStorage.setItem(key, 'true');
+        alert('Bookmark untuk ' + babId.toUpperCase() + ' berhasil disimpan!');
+      }
+    }
+
+    // LOCALSTORAGE USER NOTES
+    function saveNotes() {
+      const val = document.getElementById('userNotes').value;
+      localStorage.setItem('comp_modul_notes', val);
+      const notice = document.getElementById('saveNotice');
+      notice.classList.remove('hidden');
+      setTimeout(() => notice.classList.add('hidden'), 2000);
+    }
+
+    function loadNotes() {
+      const saved = localStorage.getItem('comp_modul_notes');
+      if (saved) document.getElementById('userNotes').value = saved;
+    }
+  </script>
+</body>
+</html>
